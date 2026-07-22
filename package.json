@@ -1,0 +1,13 @@
+{
+  "name": "tickets-waf-request-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A reproducible before/after demo for excessive /tickets WAF requests.",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

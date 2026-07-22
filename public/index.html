@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tickets WAF request demo</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">GTWGXY-1884 · reproducible demo</p>
+          <h1>為什麼 `/tickets` 會打出太多請求？</h1>
+          <p class="lede">同一批 40 張卡片，對照「背景預載」與「SSR hydration + 按需載入」兩種流程。</p>
+        </div>
+        <div class="mode-switch" role="group" aria-label="demo mode">
+          <a class="mode" data-mode="before" href="/?mode=before">錯誤版</a>
+          <a class="mode" data-mode="after" href="/?mode=after">修正版</a>
+        </div>
+      </header>
+
+      <section class="status-grid">
+        <div class="status-card danger"><span>本次模式</span><strong id="mode-label">載入中</strong><small id="mode-description"></small></div>
+        <div class="status-card"><span>動態請求總數</span><strong id="total-requests">—</strong><small>不含 metrics 查詢</small></div>
+        <div class="status-card"><span>詳細頁背景請求</span><strong id="detail-requests">—</strong><small>product + records RSC</small></div>
+      </section>
+
+      <section class="panel explanation">
+        <div class="panel-heading"><div><p class="eyebrow">Network 說明</p><h2>在 F12 → Network 觀察什麼？</h2></div><span class="pill" id="network-pill">等待請求</span></div>
+        <div class="steps"><div><b>01</b><span>錯誤版：卡片一出現就預熱大量詳細頁。</span></div><div><b>02</b><span>修正版：首頁資料由 server 準備，瀏覽器只拿必要的 profile。</span></div><div><b>03</b><span>點擊卡片後才出現 1 筆 detail 請求。</span></div></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-heading"><div><p class="eyebrow">Ticket list</p><h2>40 張卡片的首頁</h2></div><span class="pill neutral">可點擊第一張</span></div>
+        <div id="cards" class="cards"></div>
+        <div id="detail" class="detail" hidden></div>
+      </section>
+
+      <section class="panel request-panel">
+        <div class="panel-heading"><div><p class="eyebrow">Server-side request log</p><h2>本次流程的請求分布</h2></div><button id="refresh" class="button">重新整理統計</button></div>
+        <div id="request-summary" class="request-summary"></div>
+        <div id="recent" class="recent"></div>
+      </section>
+    </main>
+    <script src="/app.js"></script>
+  </body>
+</html>
